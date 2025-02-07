@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from "firebase/firestore"; // Firestore
-import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged from Firebase Auth
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
+import { getStorage } from "firebase/storage"; // Import Firebase Storage
 
 // Firebase configuration (as before)
 const firebaseConfig = {
@@ -24,6 +25,7 @@ if (typeof window !== "undefined") {
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app); // Initialize Firebase Storage
 
 // Fetch all users from Firestore
 const fetchUsers = async () => {
@@ -45,4 +47,4 @@ const fetchUsers = async () => {
   }
 };
 
-export { app, db, auth, onAuthStateChanged, fetchUsers };
+export { app, db, auth, onAuthStateChanged, fetchUsers, storage }; // Export storage

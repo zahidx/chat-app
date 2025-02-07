@@ -1,16 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaPhone } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import DatePicker from 'react-datepicker';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { app, auth, db } from './firebase'; // Importing Firebase configuration
+import { app, auth, db } from './firebase'; // Import Firebase configuration
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
+import SModal from './SModal'; // Import SModal component
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -25,12 +24,8 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [isClient, setIsClient] = useState(false);
-
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const passwordRef = useRef(null);
-  const dobRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [userId, setUserId] = useState(null); // Store the user ID after sign up
 
   useEffect(() => {
     setIsClient(true);
@@ -55,7 +50,7 @@ const SignUp = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      await setDoc(doc(db, "users", user.uid), {
+      await setDoc(doc(db, 'users', user.uid), {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -64,17 +59,14 @@ const SignUp = () => {
         createdAt: serverTimestamp(),
       });
 
-      toast.success('Account created successfully!', { position: "top-right", autoClose: 2000 });
-
-      setTimeout(() => {
-        window.location.href = '/chatroom'; // Redirect after successful signup
-      }, 2600);
+      setUserId(user.uid); // Set the user ID
+      toast.success('Account created successfully!');
+      setIsModalOpen(true); // Open the modal for image upload
 
       setFormData({ name: '', email: '', phone: '', password: '', dob: null });
-
     } catch (err) {
       setError(err.message);
-      toast.error('Signup failed. Try again.', { position: "top-right" });
+      toast.error('Signup failed. Try again.');
     } finally {
       setLoading(false);
     }
@@ -98,7 +90,6 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
-                ref={nameRef}
                 type="text"
                 name="name"
                 placeholder="Full Name"
@@ -111,7 +102,6 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-right">
               <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
-                ref={emailRef}
                 type="email"
                 name="email"
                 placeholder="Email Address"
@@ -124,7 +114,6 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
-                ref={phoneRef}
                 type="tel"
                 name="phone"
                 placeholder="Phone Number"
@@ -137,8 +126,7 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
-                ref={passwordRef}
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
@@ -156,7 +144,6 @@ const SignUp = () => {
             </div>
             <div className="relative" data-aos="fade-right">
               <DatePicker
-                ref={dobRef}
                 selected={formData.dob}
                 onChange={handleDateChange}
                 dateFormat="yyyy-MM-dd"
@@ -171,20 +158,16 @@ const SignUp = () => {
               disabled={loading}
               data-aos="zoom-in"
             >
-              {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-5 w-5 mr-2"></span> : ''}
               {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </form>
-          <p className="text-white/80 text-center mt-4" data-aos="fade-up">
-            Already have an account?{' '}
-            <Link href="#login" className="text-purple-400 hover:underline">
-              Log in
-            </Link>
-          </p>
         </motion.div>
       </div>
 
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      
+      {/* Trigger the SModal after successful signup */}
+      <SModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={userId} userInfo={formData} />
     </>
   );
 };
