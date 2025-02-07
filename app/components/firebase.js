@@ -16,7 +16,12 @@ const firebaseConfig = {
 
 // Initialize Firebase and Firestore
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics;
+
+if (typeof window !== "undefined") {
+  analytics = getAnalytics(app);  // Only initialize analytics in the client-side
+}
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 

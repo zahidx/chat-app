@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,12 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.pathname === '/login') {
+      // Only run this in the browser and on login page
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +40,9 @@ export default function Login() {
 
       // Wait for the toast to disappear, then navigate to /chatroom
       setTimeout(() => {
-        window.location.href = '/chatroom'; // Redirect to ChatRoom page
+        if (typeof window !== 'undefined') {
+          window.location.href = '/chatroom'; // Redirect to ChatRoom page (only in browser)
+        }
       }, 2600); // Wait 2.6 seconds to ensure toast has time to show
     } catch (err) {
       setError('Invalid credentials');

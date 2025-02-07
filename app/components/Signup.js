@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaPhone } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -25,6 +25,12 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneRef = useRef(null);
+  const passwordRef = useRef(null);
+  const dobRef = useRef(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -92,6 +98,7 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
+                ref={nameRef}
                 type="text"
                 name="name"
                 placeholder="Full Name"
@@ -104,6 +111,7 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-right">
               <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
+                ref={emailRef}
                 type="email"
                 name="email"
                 placeholder="Email Address"
@@ -116,6 +124,7 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
+                ref={phoneRef}
                 type="tel"
                 name="phone"
                 placeholder="Phone Number"
@@ -128,6 +137,7 @@ const SignUp = () => {
             <div className="relative" data-aos="fade-left">
               <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
+                ref={passwordRef}
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
@@ -146,6 +156,7 @@ const SignUp = () => {
             </div>
             <div className="relative" data-aos="fade-right">
               <DatePicker
+                ref={dobRef}
                 selected={formData.dob}
                 onChange={handleDateChange}
                 dateFormat="yyyy-MM-dd"
