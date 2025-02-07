@@ -5,18 +5,14 @@ import Link from 'next/link';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { app } from './firebase'; // Import Firebase app
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc, serverTimestamp } from "firebase/firestore"; // Add serverTimestamp import
+import { app, auth, db } from './firebase'; // Importing Firebase configuration
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-export default function SignUp() {
+const SignUp = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,10 +24,10 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [isClient, setIsClient] = useState(false); // State to check if it's client-side
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); // Set client-side flag after mount
+    setIsClient(true);
     AOS.init({ duration: 1000 });
   }, []);
 
@@ -50,29 +46,24 @@ export default function SignUp() {
     setError(null);
 
     try {
-      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
-      // Store user details in Firestore, including timestamp
       await setDoc(doc(db, "users", user.uid), {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         dob: formData.dob ? formData.dob.toISOString().split('T')[0] : null,
         uid: user.uid,
-        createdAt: serverTimestamp(), // Add timestamp
+        createdAt: serverTimestamp(),
       });
 
-      // Show success toast
       toast.success('Account created successfully!', { position: "top-right", autoClose: 2000 });
 
-      // Wait for the toast to disappear, then navigate to /chatroom
       setTimeout(() => {
-        window.location.href = '/chatroom'; // Redirect to ChatRoom page
-      }, 2600); // Wait 2.1 seconds to ensure toast has time to show
+        window.location.href = '/chatroom'; // Redirect after successful signup
+      }, 2600);
 
-      // Reset form after successful signup
       setFormData({ name: '', email: '', phone: '', password: '', dob: null });
 
     } catch (err) {
@@ -83,7 +74,7 @@ export default function SignUp() {
     }
   };
 
-  if (!isClient) return null; // Ensure the component is rendered only on the client
+  if (!isClient) return null;
 
   return (
     <>
@@ -182,8 +173,9 @@ export default function SignUp() {
         </motion.div>
       </div>
 
-      {/* Toast container to show toasts globally */}
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </>
   );
-}
+};
+
+export default SignUp;
