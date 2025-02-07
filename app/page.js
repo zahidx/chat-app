@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Login from "./components/Login";
+import SignUp from "./components/Signup";
 
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
 
   if (isLoading) {
     return (
+     
       <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#1A1A40] to-[#3A0CA3] text-white">
         {/* Advanced 3D Cube Loader */}
         <motion.div
@@ -61,7 +63,8 @@ export default function Home() {
   }
 
   return (
-    <main className="h-screen flex items-center justify-center bg-gradient-to-r from-[#1A1A40] to-[#3A0CA3] text-white overflow-hidden">
+    <div id="login" className="">
+    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#1A1A40] to-[#3A0CA3] text-white overflow-hidden">
       {/* Full Width Title and Description at the Top */}
       <div className="w-full flex flex-col items-center justify-center text-center px-6 py-10 sm:py-20 absolute top-0 left-0 z-10">
         <motion.h1
@@ -116,8 +119,12 @@ export default function Home() {
         </div>
 
         <Login />
-
+       
       </div>
-    </main>
+     
+
+    </div>
+    <SignUp />
+    </div>
   );
 }

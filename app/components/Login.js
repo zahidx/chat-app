@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';  // Import Font Awesome styles
+import { id } from './../../node_modules/date-fns/locale/id';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -66,7 +68,7 @@ export default function Login() {
         </div>
         
         <div className="text-center mt-4">
-          <p className="text-sm text-gray-50">Don't have an account? <a href="#" className=" font-semibold text-red-500 hover:underline">Sign up</a></p>
+          <p className="text-sm text-gray-50">Don't have an account? <a href="#signup" className=" font-semibold text-red-500 hover:underline">Sign up</a></p>
         </div>
 
         <div className="flex justify-center items-center gap-4 mt-3">
@@ -78,6 +80,9 @@ export default function Login() {
           </button>
         </div>
       </div>
+
+
+     
     </div>
   );
 }
