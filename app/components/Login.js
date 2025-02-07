@@ -53,11 +53,12 @@ export default function Login() {
             />
           </div>
           <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r from-purple-700 to-pink-900 text-white font-semibold rounded-lg shadow-md hover:from-purple-700 hover:to-pink-700 transform transition-all duration-300"
-          >
-            Log In
-          </button>
+  type="submit"
+  className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-700 text-white font-semibold rounded-lg shadow-lg transform transition-all duration-300 ease-in-out hover:scale-105 hover:from-purple-500 hover:to-pink-600 focus:ring-4 focus:ring-purple-500 focus:outline-none"
+>
+  Log In
+</button>
+
         </form>
         
         <div className="text-center mt-6">
