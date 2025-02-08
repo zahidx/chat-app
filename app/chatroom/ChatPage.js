@@ -75,7 +75,7 @@ export default function ChatPage({ selectedUser, onBack }) {
   };
 
   return (
-    <div className="w-full flex flex-col h-screen bg-[#0F172A]">
+    <div className="w-full pt-1 flex flex-col h-screen bg-[#0F172A]">
       
       {/* Header with Back Button */}
       <div className="p-4 border-b border-gray-700 text-white flex items-center">

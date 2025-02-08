@@ -55,7 +55,7 @@ export default function UsersList({ onSelectUser }) {
     <div className=" flex flex-col flex-1 overflow-y-auto p-3 sm:p-5">
       
       {/* Search Bar */}
-      <div className="relative mb-3 w-full sm:w-3/4">
+      <div className="relative mb-3 w-1/2 sm:w-3/4">
         <input
           type="text"
           placeholder="Search users..."

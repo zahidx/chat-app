@@ -117,8 +117,6 @@ const SideMenu = ({ isOpen, toggleMenu }) => {
           )}
         </ul>
       </div>
-
-      
     </>
   );
 };
