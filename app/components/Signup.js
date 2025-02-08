@@ -3,7 +3,6 @@ import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaPhone } from 'react-ic
 import { motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import DatePicker from 'react-datepicker';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { app, auth, db } from './firebase'; // Import Firebase configuration
@@ -17,15 +16,15 @@ const SignUp = () => {
     email: '',
     phone: '',
     password: '',
-    dob: null,
+    dob: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [userId, setUserId] = useState(null); // Store the user ID after sign up
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -35,10 +34,6 @@ const SignUp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, dob: date });
   };
 
   const handleSubmit = async (e) => {
@@ -54,16 +49,16 @@ const SignUp = () => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        dob: formData.dob ? formData.dob.toISOString().split('T')[0] : null,
+        dob: formData.dob,
         uid: user.uid,
         createdAt: serverTimestamp(),
       });
 
-      setUserId(user.uid); // Set the user ID
+      setUserId(user.uid);
       toast.success('Account created successfully!');
-      setIsModalOpen(true); // Open the modal for image upload
+      setIsModalOpen(true);
 
-      setFormData({ name: '', email: '', phone: '', password: '', dob: null });
+      setFormData({ name: '', email: '', phone: '', password: '', dob: '' });
     } catch (err) {
       setError(err.message);
       toast.error('Signup failed. Try again.');
@@ -84,9 +79,14 @@ const SignUp = () => {
           data-aos="fade-up"
           className="w-full max-w-md bg-white bg-opacity-10 backdrop-blur-md rounded-2xl shadow-xl p-8"
         >
-          <h2 className="text-2xl font-bold text-white text-center mb-6" data-aos="fade-down">Create an Account</h2>
+          <h2 className="text-2xl font-bold text-white text-center mb-6" data-aos="fade-down">
+            Create an Account
+          </h2>
+          
           {error && <p className="text-red-400 text-center mb-4" data-aos="fade-right">{error}</p>}
+          
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name */}
             <div className="relative" data-aos="fade-left">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
@@ -99,6 +99,8 @@ const SignUp = () => {
                 required
               />
             </div>
+  
+            {/* Email */}
             <div className="relative" data-aos="fade-right">
               <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
@@ -111,6 +113,8 @@ const SignUp = () => {
                 required
               />
             </div>
+  
+            {/* Phone Number */}
             <div className="relative" data-aos="fade-left">
               <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
@@ -123,6 +127,8 @@ const SignUp = () => {
                 required
               />
             </div>
+  
+            {/* Password */}
             <div className="relative" data-aos="fade-left">
               <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70" />
               <input
@@ -142,16 +148,21 @@ const SignUp = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
-            <div className="relative" data-aos="fade-right">
-              <DatePicker
-                selected={formData.dob}
-                onChange={handleDateChange}
-                dateFormat="yyyy-MM-dd"
-                placeholderText="📅 Select your date of birth"
-                className="w-full bg-transparent border border-white/30 rounded-lg px-10 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+  
+            {/* Date of Birth */}
+            <div className="bg-white/10 p-4 rounded-lg shadow-md" data-aos="fade-right">
+              <p className="text-sm text-gray-300 mb-2">Date of Birth</p>
+              <input
+                type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
+                className="w-full bg-transparent border border-white/30 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
+  
+            {/* Sign Up Button */}
             <button
               type="submit"
               className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg transition duration-300 disabled:opacity-50 flex items-center justify-center"
@@ -163,13 +174,14 @@ const SignUp = () => {
           </form>
         </motion.div>
       </div>
-
+  
+      {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      
-      {/* Trigger the SModal after successful signup */}
+  
+      {/* Success Modal */}
       <SModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userId={userId} userInfo={formData} />
     </>
   );
-};
+}
 
 export default SignUp;
