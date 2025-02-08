@@ -28,12 +28,15 @@ export default function ChatRoom() {
     const fetchUsers = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'users'));
-        const userList = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          name: doc.data().name || 'No Name',
-          image: doc.data().image || '/profiled.png',
-          timestamp: doc.data().timestamp || 0,
-        }));
+        const userList = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            name: data.name || 'No Name',
+            image: data.profileImage || '/profiled.png',
+            timestamp: data.timestamp || 0,
+          };
+        });
 
         setUsers(userList.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)));
       } catch (err) {
@@ -90,23 +93,21 @@ export default function ChatRoom() {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#0E1628] to-[#380643]">
       
-
       {/* Sidebar: Show only on mobile if no user is selected */}
       <aside className={`w-full sm:w-1/5 bg-[#1A1A2E] border-r border-gray-700 flex flex-col ${selectedUser ? 'hidden sm:flex' : 'flex'}`}>
         <div className="p-4 text-white text-xl font-bold border-b border-gray-700 text-center">
           Chat Room
         </div>
         <div className="relative">
-      <header className="bg-[#0E1628] text-white p-4 flex justify-between items-center">
-        <button onClick={toggleMenu} className="text-white">
-          <FaBars size={24} />
-        </button>
-      </header>
+          <header className="bg-[#0E1628] text-white p-4 flex justify-between items-center">
+            <button onClick={toggleMenu} className="text-white">
+              <FaBars size={24} />
+            </button>
+          </header>
 
-      {/* Side Menu */}
-      <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-    </div>
-
+          {/* Side Menu */}
+          <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+        </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
           {loading ? (
@@ -142,16 +143,15 @@ export default function ChatRoom() {
       {/* Chat Window */}
       {selectedUser && (
         <main className="w-full flex flex-col bg-[#0F172A] sm:flex">
-{/* Back Button (Only on Mobile) */}
-<div className="sm:hidden p-4">
-  <button
-    onClick={() => setSelectedUser(null)}
-    className="text-white bg-gray-700 px-4 py-2 rounded-lg shadow-md transition-transform transform  focus:outline-none focus:ring-2 focus:ring-blue-500 "
-  >
-    ← Back
-  </button>
-</div>
-
+          {/* Back Button (Only on Mobile) */}
+          <div className="sm:hidden p-4">
+            <button
+              onClick={() => setSelectedUser(null)}
+              className="text-white bg-gray-700 px-4 py-2 rounded-lg shadow-md transition-transform transform  focus:outline-none focus:ring-2 focus:ring-blue-500 "
+            >
+              ← Back
+            </button>
+          </div>
 
           {/* Chat Header */}
           <div className="p-4 border-b border-gray-700 text-white flex items-center">
@@ -171,9 +171,7 @@ export default function ChatRoom() {
               messages.map((msg) => (
                 <motion.div
                   key={msg.id}
-                  className={`p-3 rounded-lg ${
-                    msg.senderId === 'current-user-id' ? 'bg-blue-600 self-end' : 'bg-gray-800 self-start'
-                  }`}
+                  className={`p-3 rounded-lg ${msg.senderId === 'current-user-id' ? 'bg-blue-600 self-end' : 'bg-gray-800 self-start'}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
