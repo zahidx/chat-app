@@ -7,7 +7,7 @@ import SideMenu from './SideMenu';
 
 export default function ChatRoom() {
   const [selectedUser, setSelectedUser] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Default: Closed
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const storedMenuState = localStorage.getItem('isMenuOpen');
@@ -38,7 +38,7 @@ export default function ChatRoom() {
       </header>
 
       {/* Main Content */}
-      <div className="flex flex-1 relative sm:flex-row flex-col">
+      <div className="flex flex-1 relative">
         
         {/* Sidebar - Overlay */}
         {isMenuOpen && (
@@ -47,13 +47,13 @@ export default function ChatRoom() {
           </aside>
         )}
 
-        {/* List of Users (30%) */}
-        <div className="sm:w-1/5 w-full p-4 border-r border-gray-700">
+        {/* Mobile View: Show Only User List Initially */}
+        <div className={`w-full sm:w-1/5 ${selectedUser ? 'hidden sm:block' : 'block'}`}>
           <ListUser onSelectUser={setSelectedUser} />
         </div>
 
-        {/* Chat Window (70%) */}
-        <div className="sm:w-7/10 w-full p-4">
+        {/* Mobile View: Show Chat Only When User is Selected */}
+        <div className={`w-full sm:w-2/3 ${selectedUser ? 'block' : 'hidden sm:block'}`}>
           {selectedUser ? (
             <ChatPage selectedUser={selectedUser} onBack={() => setSelectedUser(null)} />
           ) : (
@@ -62,6 +62,7 @@ export default function ChatRoom() {
             </div>
           )}
         </div>
+        
       </div>
 
     </div>
