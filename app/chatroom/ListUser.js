@@ -52,10 +52,10 @@ export default function UsersList({ onSelectUser }) {
   }, [search, users]);
 
   return (
-    <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden p-3">
+    <div className=" flex flex-col flex-1 overflow-y-auto p-3 sm:p-5">
       
       {/* Search Bar */}
-      <div className="relative mb-3">
+      <div className="relative mb-3 w-full">
         <input
           type="text"
           placeholder="Search users..."
@@ -90,7 +90,7 @@ export default function UsersList({ onSelectUser }) {
                 alt={user.name}
                 className="w-12 h-12 rounded-full border-2 border-white mr-3"
               />
-              <span className="font-medium">{user.name}</span>
+              <span className="font-medium text-sm sm:text-base">{user.name}</span> {/* Ensures text appears */}
             </motion.li>
           ))}
         </ul>

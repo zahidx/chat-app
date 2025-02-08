@@ -28,23 +28,18 @@ export default function ChatPage({ selectedUser, onBack }) {
 
   useEffect(() => {
     if (selectedUser && currentUserId) {
-      const chatId = [currentUserId, selectedUser.id].sort().join("_"); // Ensure consistent chatId format
-      console.log("Chat ID:", chatId); // Debugging line
+      const chatId = [currentUserId, selectedUser.id].sort().join("_");
       const messagesQuery = query(
         collection(db, 'chats', chatId, 'messages'),
         orderBy('timestamp', 'asc')
       );
 
       const unsubscribe = onSnapshot(messagesQuery, (querySnapshot) => {
-        if (!querySnapshot.empty) {
-          const fetchedMessages = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setMessages(fetchedMessages);
-        } else {
-          console.log("No messages found for chatId:", chatId); // Debugging line
-        }
+        const fetchedMessages = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMessages(fetchedMessages);
       });
 
       return () => unsubscribe();
@@ -63,8 +58,7 @@ export default function ChatPage({ selectedUser, onBack }) {
 
     if (currentUserId && selectedUser) {
       try {
-        const chatId = [currentUserId, selectedUser.id].sort().join("_"); // Construct chatId properly
-        console.log("Sending message to chatId:", chatId); // Debugging line
+        const chatId = [currentUserId, selectedUser.id].sort().join("_");
         await addDoc(collection(db, 'chats', chatId, 'messages'), {
           text: message,
           senderId: currentUserId,
@@ -82,6 +76,7 @@ export default function ChatPage({ selectedUser, onBack }) {
 
   return (
     <div className="w-full flex flex-col h-screen bg-[#0F172A]">
+      
       {/* Header with Back Button */}
       <div className="p-4 border-b border-gray-700 text-white flex items-center">
         <button
@@ -95,7 +90,7 @@ export default function ChatPage({ selectedUser, onBack }) {
           alt={selectedUser.name}
           className="w-10 h-10 rounded-full border-2 border-white mx-4"
         />
-        <span className="text-lg font-semibold">{selectedUser.name}</span>
+        <span className="text-lg font-semibold truncate">{selectedUser.name}</span>
       </div>
 
       {/* Chat Messages */}
@@ -115,7 +110,7 @@ export default function ChatPage({ selectedUser, onBack }) {
             >
               {/* Sender Message - Right Side */}
               {msg.senderId === currentUserId ? (
-                <div className="bg-blue-600 text-white p-3 rounded-lg max-w-xs md:max-w-md self-end">
+                <div className="bg-blue-600 text-white p-3 rounded-lg max-w-[75%] md:max-w-[60%]">
                   <p className="break-words">{msg.text}</p>
                   <span className="block text-xs text-gray-300 mt-1 text-right">
                     {msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Sending...'}
@@ -123,7 +118,7 @@ export default function ChatPage({ selectedUser, onBack }) {
                 </div>
               ) : (
                 /* Receiver Message - Left Side */
-                <div className="bg-gray-800 text-white p-3 rounded-lg max-w-xs md:max-w-md self-start">
+                <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[75%] md:max-w-[60%]">
                   <p className="break-words">{msg.text}</p>
                   <span className="block text-xs text-gray-300 mt-1 text-left">
                     {msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Receiving...'}
@@ -137,7 +132,7 @@ export default function ChatPage({ selectedUser, onBack }) {
       </div>
 
       {/* Message Input */}
-      <div className="p-4 border-t border-gray-700 flex items-center">
+      <div className="p-4 border-t border-gray-700 flex items-center bg-[#0F172A] sticky bottom-0">
         <input
           type="text"
           placeholder="Type a message..."

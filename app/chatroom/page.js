@@ -9,15 +9,13 @@ export default function ChatRoom() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Default: Closed
 
-  // Load menu state from localStorage
   useEffect(() => {
     const storedMenuState = localStorage.getItem('isMenuOpen');
     if (storedMenuState !== null) {
-      setIsMenuOpen(storedMenuState === 'true'); // Convert string to boolean
+      setIsMenuOpen(storedMenuState === 'true');
     }
   }, []);
 
-  // Save menu state to localStorage on change
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
       const newState = !prev;
@@ -30,28 +28,32 @@ export default function ChatRoom() {
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#0E1628] to-[#380643]">
       
       {/* Top Navbar with Toggler */}
-      <header className="w-full p-4 flex items-center">
+      <header className="w-full p-4 flex items-center justify-between sm:px-6">
         <button 
           onClick={toggleMenu} 
-          className="p-2 rounded-lg shadow-md">
+          className="p-2 rounded-lg shadow-md"
+          aria-label="Toggle Sidebar">
           <Menu size={24} className="text-white" />
         </button>
       </header>
 
       {/* Main Content */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 relative sm:flex-row flex-col">
         
-        {/* Sidebar - Collapsible */}
-        <aside 
-          className={`w-64 border-r border-gray-700 flex flex-col transition-all duration-300 ease-in-out ${
-            isMenuOpen ? 'block' : 'hidden'
-          } sm:block`}>
-          <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-          <ListUser onSelectUser={setSelectedUser} />
-        </aside>
+        {/* Sidebar - Overlay */}
+        {isMenuOpen && (
+          <aside className="absolute inset-0 z-50 bg-[#1A1A2E] w-64 border-r border-gray-700 flex flex-col transition-all duration-300 ease-in-out sm:block">
+            <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+          </aside>
+        )}
 
-        {/* Chat Window */}
-        <div className="flex-1">
+        {/* List of Users (30%) */}
+        <div className="sm:w-1/5 w-full p-4 border-r border-gray-700">
+          <ListUser onSelectUser={setSelectedUser} />
+        </div>
+
+        {/* Chat Window (70%) */}
+        <div className="sm:w-7/10 w-full p-4">
           {selectedUser ? (
             <ChatPage selectedUser={selectedUser} onBack={() => setSelectedUser(null)} />
           ) : (
