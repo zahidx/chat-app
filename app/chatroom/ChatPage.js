@@ -110,20 +110,30 @@ export default function ChatPage({ selectedUser, onBack }) {
             >
               {/* Sender Message - Right Side */}
               {msg.senderId === currentUserId ? (
-                <div className="bg-blue-600 text-white p-3 rounded-lg max-w-[75%] md:max-w-[60%]">
+                <div className="max-w-[75%] md:max-w-[60%]">
+                <div className="bg-blue-600 text-white p-3 rounded-lg">
                   <p className="break-words">{msg.text}</p>
-                  <span className="block text-xs text-gray-300 mt-1 text-right">
-                    {msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Sending...'}
-                  </span>
                 </div>
+                <span className="block text-xs text-gray-300 mt-1 text-right mr-1">
+                  {msg.timestamp?.toDate
+                    ? msg.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+                    : 'Sending...'}
+                </span>
+              </div>
+              
               ) : (
                 /* Receiver Message - Left Side */
-                <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[75%] md:max-w-[60%]">
-                  <p className="break-words">{msg.text}</p>
-                  <span className="block text-xs text-gray-300 mt-1 text-left">
-                    {msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString() : 'Receiving...'}
-                  </span>
-                </div>
+                <div className="max-w-[75%] md:max-w-[60%]">
+  <div className="bg-gray-800 text-white p-3 rounded-lg">
+    <p className="break-words">{msg.text}</p>
+  </div>
+  <span className="block text-xs ml-[135] text-gray-300 mt-1 text-left">
+    {msg.timestamp?.toDate
+      ? msg.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+      : 'Receiving...'}
+  </span>
+</div>
+
               )}
             </motion.div>
           ))

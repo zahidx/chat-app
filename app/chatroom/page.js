@@ -28,7 +28,7 @@ export default function ChatRoom() {
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#0E1628] to-[#380643]">
       
 {/* Top Navbar with Toggler */}
-<header className="min-w-[20px] min-h-[60px] p-4 flex items-center justify-between sm:px-6 fixed top-0 left-0 sm:ml-[200px] ml-[420px] sm:mt-1 mt-2 z-50">
+<header className="min-w-[20px] min-h-[60px] p-4 flex items-center justify-between sm:px-6 fixed top-0 left-0 sm:ml-[200px] ml-[420px] sm:mt-1 z-50">
   <button 
     onClick={toggleMenu} 
     className="p-2 rounded-lg shadow-md"
