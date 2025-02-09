@@ -9,6 +9,7 @@ import { app, auth, db } from './firebase'; // Import Firebase configuration
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 import SModal from './SModal'; // Import SModal component
+import { useRouter } from 'next/navigation'; // Import Next.js router
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ const SignUp = () => {
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
+  const router = useRouter(); // Initialize Next.js router
 
   useEffect(() => {
     setIsClient(true);
@@ -65,6 +67,10 @@ const SignUp = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLoginRedirect = () => {
+    router.push('#login'); // Redirect to the login page
   };
 
   if (!isClient) return null;
@@ -172,6 +178,19 @@ const SignUp = () => {
               {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </form>
+
+          {/* Already have an account? Login Link */}
+          <div className="text-center mt-4">
+            <p className="text-white">
+              Already have an account?{' '}
+              <span
+                onClick={handleLoginRedirect}
+                className="cursor-pointer text-purple-500 hover:text-purple-400"
+              >
+                Login
+              </span>
+            </p>
+          </div>
         </motion.div>
       </div>
   
