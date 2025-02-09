@@ -74,15 +74,18 @@ input:checked + .slider:before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #040a35;
-  border-radius: 1px;
+
+  border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+
 }
 
 ::-webkit-scrollbar-track {
-  background: #098b6b;
+
 }
 
+html, body {
+  overflow-x: hidden;
+}

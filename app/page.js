@@ -91,7 +91,7 @@ export default function Home() {
     <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-center gap-8 sm:gap-16 px-4 sm:px-10 md:px-20 py-10">
       
       {/* Left Section - Why Choose WaveTalk */}
-      <div className="w-full sm:w-6/12 flex flex-col items-center sm:items-start text-center sm:text-left -mt-32 sm:mt-0">
+      <div className="w-full sm:w-6/12 flex flex-col items-center sm:items-start text-center sm:text-left -mt-32 sm:mt-0 hidden sm:block">
       <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-6">
           Why Choose WaveTalk?
         </h2>
