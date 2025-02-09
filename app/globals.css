@@ -70,12 +70,12 @@ input:checked + .slider:before {
 /* scroll bar custom */
 /* Customize scrollbar for WebKit browsers */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 1px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #040a35;
-  border-radius: 5px;
+  border-radius: 1px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
