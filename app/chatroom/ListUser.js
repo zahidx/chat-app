@@ -54,7 +54,7 @@ export default function UsersList({ onSelectUser }) {
   return (
     <div className="flex flex-col flex-1 p-3 sm:p-5 max-h-[100vh]">
       {/* Search Bar */}
-      <div className="relative mb-3 w-2/3 sm:w-3/4 sticky top-0 bg-[#1A1A2E] z-10 p-2">
+      <div className="relative mb-3 w-2/3 sm:w-3/4 sticky top-0 z-10 p-2">
         <input
           type="text"
           placeholder="Search users..."

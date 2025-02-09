@@ -29,7 +29,7 @@ export default function ChatRoom() {
       <header className="min-w-[20px] min-h-[60px] p-4 flex items-center justify-between sm:px-6 fixed top-0 left-0 sm:ml-[200px] ml-[290px] sm:mt-3 z-50">
         <button 
           onClick={toggleMenu} 
-          className="p-2 rounded-lg shadow-md"
+          className="p-2 rounded-lg "
           aria-label="Toggle Sidebar">
           <Menu size={24} className="text-white" />
         </button>
