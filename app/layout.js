@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import AuthRedirect from "./AuthRedirect"; // Import the AuthRedirect component
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,14 +19,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Include the AuthRedirect component to handle redirection */}
+        <AuthRedirect />
         {children}
       </body>
     </html>
