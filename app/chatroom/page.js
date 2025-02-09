@@ -11,12 +11,8 @@ export default function ChatRoom() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const storedMenuState = localStorage.getItem('isMenuOpen');
-    if (storedMenuState !== null) {
-      setIsMenuOpen(storedMenuState === 'true');
-    }
-  }, []);
+  // Removed the useEffect for menu state initialization
+  // You can still use it for persistence if needed, but it shouldn't auto-open on page load
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {

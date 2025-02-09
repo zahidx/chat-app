@@ -53,7 +53,7 @@ export default function UsersList({ onSelectUser }) {
 
   return (
     <div className="flex flex-col flex-1 p-3 sm:p-5 max-h-[100vh]">
-      {/* Search Bar (Fixed) */}
+      {/* Search Bar */}
       <div className="relative mb-3 w-2/3 sm:w-3/4 sticky top-0 bg-[#1A1A2E] z-10 p-2">
         <input
           type="text"
@@ -75,10 +75,10 @@ export default function UsersList({ onSelectUser }) {
         )}
       </div>
 
-      {/* Scrollable User List */}
+      {/* User List */}
       <div className="overflow-y-auto flex-1 max-h-[90vh]">
         {loading ? (
-          <div className="flex justify-center items-center text-white p-4">
+          <div className="flex justify-center items-center text-white p-4 sm:mr-20 ">
             <HashLoader color="#0632d1" loading={loading} size={50} />
           </div>
         ) : error ? (
@@ -93,20 +93,24 @@ export default function UsersList({ onSelectUser }) {
               <motion.li
                 key={user.id}
                 onClick={() => onSelectUser(user)}
-                className="flex items-center p-3 cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#0F3460] text-gray-300 rounded-lg hover:shadow-lg"
+                className="relative flex items-center p-3 cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#0F3460] text-gray-300 rounded-lg hover:shadow-lg"
                 whileHover={{ scale: 1.0 }}
                 role="listitem"
                 aria-label={`Select user ${user.name}`}
               >
-                <img
-                  src={user.image}
-                  alt={user.name}
-                  className="w-12 h-12 rounded-full border-2 border-white mr-3"
-                  aria-hidden="true"
-                />
-                <div className="flex-1">
+                {/* Profile Image with Always Visible Active Status Indicator */}
+                <div className="relative">
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    className="w-12 h-12 rounded-full border-2 border-white"
+                    aria-hidden="true"
+                  />
+                  {/* Always Visible Green Active Indicator */}
+                  <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full z-10"></span>
+                </div>
+                <div className="flex-1 ml-3">
                   <span className="font-medium text-sm sm:text-base">{user.name}</span>
-                  <span className="block text-xs text-gray-400">Active</span>
                 </div>
               </motion.li>
             ))}

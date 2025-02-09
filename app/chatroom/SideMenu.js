@@ -1,14 +1,41 @@
-import { useState } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
 import { FaTimes, FaHome, FaEnvelope, FaCog, FaSignOutAlt, FaUser, FaLock, FaMoon, FaSun } from 'react-icons/fa';
+import LogoutModal from './LogoutModal'; // Import the LogoutModal component
 
 const SideMenu = ({ isOpen, toggleMenu }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false); // State to control modal visibility
+
+  // Load the modal state from localStorage to persist across reloads
+  useEffect(() => {
+    const modalState = localStorage.getItem('logoutModalState');
+    if (modalState === 'open') {
+      setLogoutModalOpen(true);
+    }
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark', !darkMode);
+  };
+
+  const openLogoutModal = () => {
+    setLogoutModalOpen(true); // Open logout modal
+    localStorage.setItem('logoutModalState', 'open'); // Store modal state in localStorage
+  };
+
+  const closeLogoutModal = () => {
+    setLogoutModalOpen(false); // Close logout modal
+    localStorage.setItem('logoutModalState', 'closed'); // Store modal state as closed
+  };
+
+  // Function to close the side menu
+  const handleMenuItemClick = () => {
+    toggleMenu(); // Close the side menu after clicking a menu item
   };
 
   return (
@@ -40,19 +67,32 @@ const SideMenu = ({ isOpen, toggleMenu }) => {
 
         {/* Main Navigation Items */}
         <ul className="p-4 space-y-4">
-          <li className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200">
+          <li
+            className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
+            onClick={handleMenuItemClick}
+          >
             <FaHome className="mr-2" />
             Home
           </li>
-          <li className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200">
+          <li
+            className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
+            onClick={handleMenuItemClick}
+          >
             <FaEnvelope className="mr-2" />
             Messages
           </li>
-          <li className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200">
+          <li
+            className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
+            onClick={handleMenuItemClick}
+          >
             <FaCog className="mr-2" />
             Settings
           </li>
-          <li className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200">
+          {/* Logout Button - Open Modal on Click */}
+          <li
+            className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
+            onClick={openLogoutModal}
+          >
             <FaSignOutAlt className="mr-2" />
             Logout
           </li>
@@ -81,7 +121,10 @@ const SideMenu = ({ isOpen, toggleMenu }) => {
           {/* Personal Details */}
           <li
             className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
-            onClick={() => setShowDetails(!showDetails)}
+            onClick={() => {
+              setShowDetails(!showDetails);
+              handleMenuItemClick(); // Close the menu when clicking Personal Details
+            }}
           >
             <FaUser className="mr-2" />
             Personal Details
@@ -96,7 +139,10 @@ const SideMenu = ({ isOpen, toggleMenu }) => {
           {/* Change Password */}
           <li
             className="flex items-center cursor-pointer hover:bg-[#0F3460] p-2 rounded transition-all duration-200"
-            onClick={() => setShowPasswordChange(!showPasswordChange)}
+            onClick={() => {
+              setShowPasswordChange(!showPasswordChange);
+              handleMenuItemClick(); // Close the menu when clicking Change Password
+            }}
           >
             <FaLock className="mr-2" />
             Change Password
@@ -117,6 +163,9 @@ const SideMenu = ({ isOpen, toggleMenu }) => {
           )}
         </ul>
       </div>
+
+      {/* Logout Modal */}
+      <LogoutModal isOpen={isLogoutModalOpen} onClose={closeLogoutModal} />
     </>
   );
 };
